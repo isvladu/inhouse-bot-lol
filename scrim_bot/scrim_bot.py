@@ -1,9 +1,10 @@
-from config import TOKEN
-from scrim_bot.utils.constants import PREFIX
 import logging
 
 import discord
 from discord.ext import commands
+
+from config import TOKEN
+from scrim_bot.utils.constants import PREFIX
 
 intents = discord.Intents.default()
 intents.members = True

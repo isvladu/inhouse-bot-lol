@@ -1,5 +1,6 @@
-from scrim_bot.scrim_bot import ScrimBot
 import logging
+
+from scrim_bot.scrim_bot import ScrimBot
 
 if __name__ == '__main__':
     logger = logging

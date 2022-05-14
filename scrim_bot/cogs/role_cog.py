@@ -1,12 +1,12 @@
-import discord
-from discord.ext import commands
 import logging
 
-from scrim_bot.scrim_bot import ScrimBot
+import discord
+from discord.ext import commands
 
-from scrim_bot.database_orm.player_connection import PlayerConnection
 from scrim_bot.core.player import Player
 from scrim_bot.core.role import RoleIsInvalid
+from scrim_bot.database_orm.player_connection import PlayerConnection
+from scrim_bot.scrim_bot import ScrimBot
 
 
 class RoleCog(commands.Cog, name="Role"):

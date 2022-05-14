@@ -1,6 +1,6 @@
-from scrim_bot.core.role import Role, RoleIsInvalid
-from scrim_bot.database_orm.connection import Connection
 import logging
+
+from scrim_bot.core.role import Role, RoleIsInvalid
 
 logger = logging.getLogger(__name__)
 
