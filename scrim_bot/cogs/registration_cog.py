@@ -9,7 +9,7 @@ from scrim_bot.core.role import RoleIsInvalid
 from scrim_bot.database_orm.player_connection import PlayerConnection
 from scrim_bot.scrim_bot import ScrimBot
 from scrim_bot.utils.constants import MEMBER_ROLE_ID, REG_CHANNEL_ID, ROLE_REG_CHANNEL_ID, SUMM_REG_CHANNEL_ID
-from scrim_bot.utils.summoner_validator import SummonerValidator
+from scrim_bot.utils.summoner_validator import Summoner
 
 
 class RegistrationCog(commands.Cog, name="Role"):
@@ -91,7 +91,7 @@ class RegistrationCog(commands.Cog, name="Role"):
 
         summoner_name = ctx.message.content.split(' ')[1]
         player = self.connection.getPlayer(ctx.author.id)
-        summ_validator = SummonerValidator(summoner_name)
+        summ_validator = Summoner(summoner_name)
 
         embed = discord.Embed(title=ctx.author.name,
                               description="Please change your profile icon in the League Client to the following to "
@@ -137,4 +137,7 @@ class RegistrationCog(commands.Cog, name="Role"):
             embed = discord.Embed(title=f"Removed __{player.name}'s__ summoner name",
                                   description=player.summoner_name)
             await ctx.send(embed=embed)
-            
+
+# TODO: Remove remove_summoner as it's use is not necessary.
+#       Implement elo on summoner_name registration first time only to set the starting elo for each player.
+#       Doesn't update when you change summoner name.

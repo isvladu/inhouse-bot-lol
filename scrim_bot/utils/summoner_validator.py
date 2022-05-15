@@ -4,7 +4,7 @@ import random
 from config import RIOT_TOKEN
 
 
-class SummonerValidator:
+class Summoner:
     """
     Class that validates when a summoner is added.
     """
