@@ -18,9 +18,9 @@ class ScrimBot(commands.Bot):
     def __init__(self, **options):
         super().__init__(PREFIX, intents=intents, case_insensitive=True, **options)
 
-        from scrim_bot.cogs.role_cog import RoleCog
+        from scrim_bot.cogs.registration_cog import RegistrationCog
 
-        self.add_cog(RoleCog(self))
+        self.add_cog(RegistrationCog(self))
 
         self.logger = logging.getLogger(__name__)
 
