@@ -16,7 +16,7 @@ class Player:
     elo: float
     summoner_name: str
 
-    def __init__(self, _id: int, name: str, roles: list[str] = [], elo: float = 800, summoner_name: str = None):
+    def __init__(self, _id: int, name: str, roles: list[str] = [], elo: float = None, summoner_name: str = None):
         self._id = _id
         self._name = name
         self.addRoles(roles)

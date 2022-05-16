@@ -9,7 +9,7 @@ from scrim_bot.core.role import RoleIsInvalid
 from scrim_bot.database_orm.player_connection import PlayerConnection
 from scrim_bot.scrim_bot import ScrimBot
 from scrim_bot.utils.constants import MEMBER_ROLE_ID, REG_CHANNEL_ID, ROLE_REG_CHANNEL_ID, SUMM_REG_CHANNEL_ID
-from scrim_bot.utils.summoner_validator import Summoner
+from scrim_bot.utils.summoner import Summoner
 
 
 class RegistrationCog(commands.Cog, name="Role"):
@@ -91,29 +91,34 @@ class RegistrationCog(commands.Cog, name="Role"):
 
         summoner_name = ctx.message.content.split(' ')[1]
         player = self.connection.getPlayer(ctx.author.id)
-        summ_validator = Summoner(summoner_name)
+        summ = Summoner(summoner_name)
 
         embed = discord.Embed(title=ctx.author.name,
                               description="Please change your profile icon in the League Client to the following to "
                                           "validate your account.")
-        embed.set_image(url=summ_validator.getSummonerIconURL())
+        embed.set_image(url=summ.getSummonerIconURL())
         await ctx.author.send(embed=embed)
 
-        while not summ_validator.validateSummoner():
-            if summ_validator.timer > 0:
-                summ_validator.timer -= 2
+        while not summ.validateSummoner():
+            if summ.timer > 0:
+                summ.timer -= 2
                 await asyncio.sleep(2)
             else:
                 await ctx.send("Failed to validate your account in time. Please try again!")
                 return
 
+        avg, err = summ.getSummonerMMR()
+
         if player is None:
-            new_player = Player(_id=ctx.author.id, name=ctx.author.name, summoner_name=summoner_name)
+            new_player = Player(_id=ctx.author.id, name=ctx.author.name, summoner_name=summoner_name, elo=avg)
             self.connection.insertPlayer(new_player)
             embed = discord.Embed(title=f"Registered __{new_player.name}__ to the database with summoner name",
                                   description=new_player.summoner_name)
             await ctx.send(embed=embed)
         else:
+            if player.elo is None:
+                player.elo = avg
+                self.connection.updatePlayerElo(player)
             player.summoner_name = summoner_name
             self.connection.updatePlayerSummonerName(player)
             embed = discord.Embed(title=f"Updated __{player.name}'s__ summoner name to",
@@ -137,6 +142,14 @@ class RegistrationCog(commands.Cog, name="Role"):
             embed = discord.Embed(title=f"Removed __{player.name}'s__ summoner name",
                                   description=player.summoner_name)
             await ctx.send(embed=embed)
+
+    @commands.command()
+    async def test_rank(self, ctx: commands.Context):
+        summoner_name = "tempname187"
+        summ = Summoner(summoner_name)
+        avg, err, warn = summ.getSummonerMMR()
+
+        await ctx.send(f"{avg}, +-{err}, {warn}")
 
 # TODO: Remove remove_summoner as it's use is not necessary.
 #       Implement elo on summoner_name registration first time only to set the starting elo for each player.
