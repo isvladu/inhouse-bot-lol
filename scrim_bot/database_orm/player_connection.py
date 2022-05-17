@@ -31,7 +31,8 @@ class PlayerConnection(Connection):
 
     def updatePlayer(self, player: Player):
         query = {"_id": player.id}
-        values = {"$set": {"roles": player.getRoles(), "elo": player.elo, "summoner_name": player.summoner_name}}
+        values = {"$set": {"roles": player.getRoles(), "elo": player.elo,
+                           "summoner_name": player.summoner_name}}
 
         self.table.update_one(query, values)
 

@@ -12,7 +12,7 @@ from scrim_bot.utils.constants import MEMBER_ROLE_ID, REG_CHANNEL_ID, ROLE_REG_C
 from scrim_bot.utils.summoner import Summoner
 
 
-class RegistrationCog(commands.Cog, name="Role"):
+class RegistrationCog(commands.Cog, name="Registration"):
     """
     Manages role registration
     """
@@ -45,7 +45,8 @@ class RegistrationCog(commands.Cog, name="Role"):
         player = self.connection.getPlayer(ctx.author.id)
 
         if player is None:
-            new_player = Player(_id=ctx.author.id, name=ctx.author.name, roles=role_list)
+            new_player = Player(_id=ctx.author.id,
+                                name=ctx.author.name, roles=role_list)
             self.connection.insertPlayer(new_player)
             embed = discord.Embed(title=f"Registered __{new_player.name}__ to the database with roles",
                                   description=', '.join(new_player.getRoles()))
@@ -110,7 +111,8 @@ class RegistrationCog(commands.Cog, name="Role"):
         avg, err = summ.getSummonerMMR()
 
         if player is None:
-            new_player = Player(_id=ctx.author.id, name=ctx.author.name, summoner_name=summoner_name, elo=avg)
+            new_player = Player(
+                _id=ctx.author.id, name=ctx.author.name, summoner_name=summoner_name, elo=avg)
             self.connection.insertPlayer(new_player)
             embed = discord.Embed(title=f"Registered __{new_player.name}__ to the database with summoner name",
                                   description=new_player.summoner_name)

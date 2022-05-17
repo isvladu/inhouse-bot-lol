@@ -12,16 +12,20 @@ class Player:
 
     _id: int
     _name: str
-    roles: list[Role] = []
+    roles: list[Role]
     elo: float
     summoner_name: str
 
-    def __init__(self, _id: int, name: str, roles: list[str] = list, elo: float = None, summoner_name: str = None):
+    def __init__(self, _id: int, name: str, roles: list[str] = None, elo: float = None, summoner_name: str = None):
         self._id = _id
         self._name = name
-        self.addRoles(roles)
         self.elo = elo
         self.summoner_name = summoner_name
+        
+        if roles is None:
+            roles = []
+        else:
+            self.addRoles(roles)
 
     def addRole(self, role: str):
         validated_role = Role.validateRole(role)
