@@ -24,9 +24,15 @@ class QueueCog(commands.Cog, name="Queue"):
 
     @commands.command()
     async def queue(self, ctx: commands.Context):
-        if ctx.channel.id != QUEUE_CHANNEL_ID:
-            await ctx.send("Please use this command in it's respective channel: #queue.")
-            return
-
+        # if ctx.channel.id != QUEUE_CHANNEL_ID:
+        #     await ctx.send("Please use this command in it's respective channel: #queue.")
+        #     return
+        player = self.connection.getPlayer(ctx.author.id)
+        self.queue.addPlayerToQueue(player)
+        
         # When you add a player to the queue it should be enveloped in a try/catch block
         pass
+
+    @commands.command()
+    async def getQueue(self, ctx: commands.Context):
+        await ctx.send([f"{player.id} - {player.name}" for player in self.queue.queue_list])
