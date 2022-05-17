@@ -1,1 +1,9 @@
 config.py
+/__pycache__
+/.idea
+/.vscode
+/scrim_bot/__pycache__
+/scrim_bot/cogs/__pycache__
+/scrim_bot/core/__pycache__
+/scrim_bot/database_orm/__pycache__
+/scrim_bot/utils/__pycache__
