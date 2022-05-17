@@ -56,7 +56,7 @@ class RegistrationCog(commands.Cog, name="Role"):
             except RoleIsInvalid as e:
                 await ctx.send(f"Role {e.role} is invalid! Please try again!")
                 return
-            self.connection.updatePlayerRoles(player)
+            self.connection.updatePlayerRoles(player.id, player.getRoles())
             embed = discord.Embed(title=f"Updated __{player.name}'s__ roles to",
                                   description=', '.join(player.getRoles()))
             await ctx.send(embed=embed)
@@ -78,7 +78,7 @@ class RegistrationCog(commands.Cog, name="Role"):
             except RoleIsInvalid as e:
                 await ctx.send(f"Role {e.role} is invalid! Please try again!")
                 return
-            self.connection.updatePlayerRoles(player)
+            self.connection.updatePlayerRoles(player.id, player.getRoles())
             embed = discord.Embed(title=f"Updated __{player.name}'s__ roles to",
                                   description=', '.join(player.getRoles()))
             await ctx.send(embed=embed)
@@ -118,39 +118,8 @@ class RegistrationCog(commands.Cog, name="Role"):
         else:
             if player.elo is None:
                 player.elo = avg
-                self.connection.updatePlayerElo(player)
             player.summoner_name = summoner_name
-            self.connection.updatePlayerSummonerName(player)
+            self.connection.updatePlayer(player)
             embed = discord.Embed(title=f"Updated __{player.name}'s__ summoner name to",
                                   description=player.summoner_name)
             await ctx.send(embed=embed)
-
-    @commands.command()
-    async def remove_summoner(self, ctx: commands.Context):
-        if ctx.channel.id != SUMM_REG_CHANNEL_ID:
-            await ctx.send("Please use this command in it's respective channel: #summoner_registration!")
-            return
-
-        summoner_name = ctx.message.content.split(' ')[1]
-        player = self.connection.getPlayer(ctx.author.id)
-
-        if player is None:
-            await ctx.send("That summoner name is not linked to you!")
-        else:
-            player.summoner_name = None
-            self.connection.updatePlayerSummonerName(player)
-            embed = discord.Embed(title=f"Removed __{player.name}'s__ summoner name",
-                                  description=player.summoner_name)
-            await ctx.send(embed=embed)
-
-    @commands.command()
-    async def test_rank(self, ctx: commands.Context):
-        summoner_name = "tempname187"
-        summ = Summoner(summoner_name)
-        avg, err, warn = summ.getSummonerMMR()
-
-        await ctx.send(f"{avg}, +-{err}, {warn}")
-
-# TODO: Remove remove_summoner as it's use is not necessary.
-#       Implement elo on summoner_name registration first time only to set the starting elo for each player.
-#       Doesn't update when you change summoner name.

@@ -4,6 +4,8 @@ from scrim_bot.core.player import Player
 from scrim_bot.database_orm.connection import Connection
 
 
+# TODO: Change implementation of updates to contain only required parameter.
+#       Add a new update method that takes player as a parameter.
 class PlayerConnection(Connection):
     """
     Represents the connection handling of operations with the Players table.
@@ -27,20 +29,26 @@ class PlayerConnection(Connection):
     def insertPlayer(self, player: Player):
         self.table.insert_one(player.encode_player())
 
-    def updatePlayerRoles(self, player: Player):
+    def updatePlayer(self, player: Player):
         query = {"_id": player.id}
-        values = {"$set": {"roles": player.getRoles()}}
+        values = {"$set": {"roles": player.getRoles(), "elo": player.elo, "summoner_name": player.summoner_name}}
 
         self.table.update_one(query, values)
 
-    def updatePlayerElo(self, player: Player):
-        query = {"_id": player.id}
-        values = {"$set": {"elo": player.elo}}
+    def updatePlayerRoles(self, _id: str, roles: list[str]):
+        query = {"_id": _id}
+        values = {"$set": {"roles": roles}}
 
         self.table.update_one(query, values)
 
-    def updatePlayerSummonerName(self, player: Player):
-        query = {"_id": player.id}
-        values = {"$set": {"summoner_name": player.summoner_name}}
+    def updatePlayerElo(self, _id: str, elo: int):
+        query = {"_id": _id}
+        values = {"$set": {"elo": elo}}
+
+        self.table.update_one(query, values)
+
+    def updatePlayerSummonerName(self, _id: str, summoner_name: str):
+        query = {"_id": _id}
+        values = {"$set": {"summoner_name": summoner_name}}
 
         self.table.update_one(query, values)
