@@ -69,8 +69,6 @@ class Queue(Subject):
         logger.info(f"Added player {player.id} - {player.name} to queue")
 
     def removePlayerFromQueue(self, player: Player):
-        logger.info(f"{player.id}, {player.name}, {player.summoner_name}")
-        logger.info(f"{self.queue_list[0].id}")
         if player not in self.queue_list:
             logger.error("Player not in queue!")
             raise NotInQueue(player)
