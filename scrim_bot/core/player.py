@@ -25,6 +25,14 @@ class Player:
 
         if roles is not None:
             self.addRoles(roles)
+            
+    def __eq__(self, other):
+        if isinstance(other, Player):
+            return self.id == other.id
+        return False
+    
+    def __name__(self, other):
+        return not self.__eq__(other)
 
     def addRole(self, role: str):
         validated_role = Role.validateRole(role)

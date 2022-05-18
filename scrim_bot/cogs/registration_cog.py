@@ -12,7 +12,7 @@ from scrim_bot.utils.constants import MEMBER_ROLE_ID, REG_CHANNEL_ID, ROLE_REG_C
 from scrim_bot.utils.summoner import Summoner
 
 
-class RegistrationCog(commands.Cog, name="Registration"):
+class RegistrationCog(commands.Cog):
     """
     Manages role registration
     """
