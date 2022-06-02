@@ -27,7 +27,7 @@ class Queue(Subject):
 
     queue_list: list[Player]
     players_in_queue: int
-    timer: int = 0 # Representation in seconds of the queue timer
+    timer: int = 0  # Representation in seconds of the queue timer
     _observers: list[Observer] = []
 
     def __init__(self, queue_list: list[Player] = None):
@@ -37,24 +37,18 @@ class Queue(Subject):
         else:
             self.queue_list = queue_list
             self.players_in_queue = len(queue_list)
-            
+
     def attach(self, observer: Observer) -> None:
         logger.info(f"Queue: Attached an observer.")
         self._observers.append(observer)
-        
+
     def detach(self, observer: Observer) -> None:
         self._observers.remove(observer)
-        
+
     def notify(self) -> None:
         logger.info(f"Queue: Notifying observers...")
         for observer in self._observers:
             observer.update(self)
-
-    # Returns current queue timer as a tuple of (minutes, seconds)
-    def getQueueTimer(self, current_time: datetime):
-        difference = (current_time - self.start_time).total_seconds()
-        m, s = divmod(difference, 60)
-        return int(m), int(s)
 
     def addPlayerToQueue(self, player: Player):
         if player in self.queue_list:
@@ -76,7 +70,5 @@ class Queue(Subject):
         self.players_in_queue -= 1
         self.notify()
 
-    def findMatch(self):
+    def findMatch(self): # TODO: implement this
         pass
-
-# TODO: implement observer pattern listener for when 10+ players are in queue

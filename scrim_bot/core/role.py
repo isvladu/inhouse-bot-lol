@@ -5,6 +5,7 @@ class RoleIsInvalid(Exception):
     """
     Exception raised if the role is invalid.
     """
+
     def __init__(self, role: str):
         self.role = role
 

@@ -4,8 +4,6 @@ from scrim_bot.core.player import Player
 from scrim_bot.database_orm.connection import Connection
 
 
-# TODO: Change implementation of updates to contain only required parameter.
-#       Add a new update method that takes player as a parameter.
 class PlayerConnection(Connection):
     """
     Represents the connection handling of operations with the Players table.
